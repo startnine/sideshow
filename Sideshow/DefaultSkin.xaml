@@ -1,0 +1,382 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Sideshow">
+    <Style TargetType="{x:Type local:MainWindow}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:MainWindow}">
+                    <Grid x:Name="RootGrid">
+                        <Border BorderBrush="#C0404040" BorderThickness="1,0,0,0">
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#A0000000"/>
+                                        <GradientStop Offset="1" Color="#C0000000"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                            <Border Width="32" HorizontalAlignment="Left" BorderBrush="#C0C0C0C0" BorderThickness="1,0,0,0">
+                                <Border.Background>
+                                    <RadialGradientBrush GradientOrigin="0,0.5" Center="0,0.5" RadiusX="1" RadiusY="0.625">
+                                        <RadialGradientBrush.GradientStops>
+                                            <GradientStop Offset="0.95" Color="#20FFFFFF"/>
+                                            <GradientStop Offset="1" Color="#00FFFFFF"/>
+                                        </RadialGradientBrush.GradientStops>
+                                    </RadialGradientBrush>
+                                </Border.Background>
+                                <Border.OpacityMask>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="Black"/>
+                                            <GradientStop Offset="1" Color="#C0000000"/>
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.OpacityMask>
+                            </Border>
+                        </Border>
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ListView">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+    </Style>
+
+    <Style x:Key="{x:Type ListViewItem}" TargetType="{x:Type ListViewItem}">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                    <Grid>
+                        <Border Margin="1,0,0,0" BorderBrush="#C0404040" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Border BorderBrush="#C0C0C0C0" BorderThickness="0,1"/>
+                        </Border>
+                        <Grid x:Name="HoverBackground" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0" Opacity="0">
+                            <Border Background="#40FFFFFF">
+                                <Border.OpacityMask>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="Transparent" />
+                                            <GradientStop Offset="0.25" Color="White" />
+                                            <GradientStop Offset="1" Color="Transparent" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.OpacityMask>
+                            </Border>
+                            <Grid x:Name="ShineLine" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="10" Margin="0,-6">
+                                <Grid.Background>
+                                    <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                                        <RadialGradientBrush.GradientStops>
+                                            <GradientStop Offset="0" Color="#40FFFFFF" />
+                                            <GradientStop Offset="1" Color="Transparent" />
+                                        </RadialGradientBrush.GradientStops>
+                                    </RadialGradientBrush>
+                                </Grid.Background>
+                                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Center" Fill="#40FFFFFF" Height="1"/>
+                            </Grid>
+                        </Grid>
+                        <Grid Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentPresenter x:Name="PART_ContentPresenter" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" Visibility="Hidden"/>
+                            <GridViewRowPresenter x:Name="PART_GridViewRowPesenter" Visibility="Visible" />
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="GridView.ColumnCollection" Value="{x:Null}">
+                            <Setter TargetName="PART_ContentPresenter" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_GridViewRowPesenter" Property="Visibility" Value="Hidden"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.375"/>
+                                        <ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,5" Duration="0:0:0.375"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.375"/>
+                                        <ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,-6" Duration="0:0:0.375"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="FloatingPanelsListViewStyle" TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+        <Style.Resources>
+            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            </Style>
+        </Style.Resources>
+    </Style>
+
+    <Style x:Key="AnchoredPanelsListViewStyle" TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+        <Style.Resources>
+            <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+                <Setter Property="BorderThickness" Value="0,1,0,0"/>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Margin" Value="0,0,0,-1"/>
+    </Style>
+
+    <Style x:Key="{x:Type local:AnalogClock}" TargetType="{x:Type local:AnalogClock}">
+        <!--Setter Property="Width" Value="Auto"/>
+        <Setter Property="Height" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="VerticalAlignment" Value="Center"/-->
+        <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="MaxWidth" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Panel}}}"/>
+        <Setter Property="MaxHeight" Value="{Binding MaxWidth, RelativeSource={RelativeSource Mode=Self}}"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:AnalogClock}">
+                    <Grid Margin="{TemplateBinding Padding}">
+                        <Ellipse Fill="#FF666666" Stroke="Black" StrokeThickness="1"/>
+                        <Ellipse Fill="#FF171717" StrokeThickness="1" Margin="2">
+                            <Ellipse.Stroke>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <LinearGradientBrush.GradientStops>
+                                        <GradientStop Offset="0" Color="#FF171717"/>
+                                        <GradientStop Offset="1" Color="#FF000000"/>
+                                    </LinearGradientBrush.GradientStops>
+                                </LinearGradientBrush>
+                            </Ellipse.Stroke>
+                        </Ellipse>
+                        <Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="30"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="60"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="90"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="120"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="150"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="180"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="210"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="240"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="270"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="300"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" RenderTransformOrigin="0.5,0.5">
+                                <Canvas HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,4,0,0" Width="1" Height="3" Background="Gray"/>
+                                <Grid.RenderTransform>
+                                    <RotateTransform Angle="330"/>
+                                </Grid.RenderTransform>
+                            </Grid>
+                        </Grid>
+                        <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="0" Stroke="Transparent" Fill="White" Width="4" Height="4"/>
+                        <Grid x:Name="PART_SecondsHand" HorizontalAlignment="Center" VerticalAlignment="Center" Width="1" Height="1" RenderTransformOrigin="0.5,1">
+                            <Canvas HorizontalAlignment="Center" VerticalAlignment="Bottom" Width="1" Height="60" Background="Gray" Opacity="0.75"/>
+                            <Grid.RenderTransform>
+                                <RotateTransform x:Name="PART_SecondsHandTransform"/>
+                            </Grid.RenderTransform>
+                        </Grid>
+                        <Grid x:Name="PART_MinutesHand" HorizontalAlignment="Center" VerticalAlignment="Center" Width="1" Height="1" RenderTransformOrigin="0.5,1">
+                            <Canvas HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,5,0,0" Width="1" Height="48" Background="Gray"/>
+                            <Grid.RenderTransform>
+                                <RotateTransform x:Name="PART_MinutesHandTransform"/>
+                            </Grid.RenderTransform>
+                        </Grid>
+                        <Grid x:Name="PART_HoursHand" HorizontalAlignment="Center" VerticalAlignment="Center" Width="1" Height="1" RenderTransformOrigin="0.5,1">
+                            <Canvas HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0" Width="1" Height="28" Background="Gray"/>
+                            <Grid.RenderTransform>
+                                <RotateTransform x:Name="PART_HoursHandTransform"/>
+                            </Grid.RenderTransform>
+                        </Grid>
+                        <Ellipse Margin="1" StrokeThickness="0" Stroke="Transparent">
+                            <Ellipse.Fill>
+                                <RadialGradientBrush Center="0.6,0.6" GradientOrigin="0.475,0.475" RadiusX="0.625" RadiusY="0.625">
+                                    <RadialGradientBrush.GradientStops>
+                                        <GradientStop Offset="0.5" Color="Transparent"/>
+                                        <GradientStop Offset="0.75" Color="#20FFFFFF"/>
+                                        <GradientStop Offset="1" Color="#90FFFFFF"/>
+                                    </RadialGradientBrush.GradientStops>
+                                </RadialGradientBrush>
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!--DataTrigger Value="True">
+                <DataTrigger.Binding>
+                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type local:Panel}}">
+                        <Binding.Converter>
+                            <local:FrameworkElementOrientationToBoolConverter/>
+                        </Binding.Converter>
+                    </Binding>
+                </DataTrigger.Binding>
+                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Mode=Self}}"/>
+                <Setter Property="Height" Value="Auto"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Stretch"/>
+            </DataTrigger-->
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type local:Panel}">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Panel}">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#40FF00FF">
+                        <!--Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="10"/>
+                        </Grid.RowDefinitions-->
+                        <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/><!-- Grid.RowSpan="2" Grid.ColumnSpan="2"/-->
+                        <Thumb x:Name="PART_ResizeGrip" Grid.Row="0" Grid.Column="0"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter Property="MaxWidth" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
+                            <Setter TargetName="PART_ResizeGrip" Property="Height" Value="10"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="IsDirectionReversed" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ResizeGrip" Property="VerticalAlignment" Value="Top"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="IsDirectionReversed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ResizeGrip" Property="VerticalAlignment" Value="Bottom"/>
+                        </MultiTrigger>
+
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter Property="MaxHeight" Value="{Binding ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
+                            <Setter TargetName="PART_ResizeGrip" Property="Width" Value="10"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="IsDirectionReversed" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ResizeGrip" Property="HorizontalAlignment" Value="Right"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="IsDirectionReversed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ResizeGrip" Property="HorizontalAlignment" Value="Left"/>
+                        </MultiTrigger>
+                        
+                        <!--Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="IsDirectionReversed" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Row" Value="2"/>
+                        </MultiTrigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.RowSpan" Value="3"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="IsDirectionReversed" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_ResizeGrip" Property="Grid.Column" Value="2"/>
+                        </MultiTrigger-->
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
