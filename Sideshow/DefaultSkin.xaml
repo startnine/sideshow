@@ -79,7 +79,7 @@
                                     </LinearGradientBrush>
                                 </Border.OpacityMask>
                             </Border>
-                            <Grid x:Name="ShineLine" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="10" Margin="0,-6">
+                            <!--Grid x:Name="ShineLine" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="10" Margin="0,-6">
                                 <Grid.Background>
                                     <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5">
                                         <RadialGradientBrush.GradientStops>
@@ -89,7 +89,7 @@
                                     </RadialGradientBrush>
                                 </Grid.Background>
                                 <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Center" Fill="#40FFFFFF" Height="1"/>
-                            </Grid>
+                            </Grid-->
                         </Grid>
                         <Grid Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                             <ContentPresenter x:Name="PART_ContentPresenter" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False" Visibility="Hidden"/>
@@ -106,7 +106,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.375"/>
-                                        <ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,5" Duration="0:0:0.375"/>
+                                        <!--ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,5" Duration="0:0:0.375"/-->
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.EnterActions>
@@ -114,7 +114,7 @@
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="HoverBackground" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.375"/>
-                                        <ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,-6" Duration="0:0:0.375"/>
+                                        <!--ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,-6" Duration="0:0:0.375"/-->
                                     </Storyboard>
                                 </BeginStoryboard>
                             </Trigger.ExitActions>
@@ -297,7 +297,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Panel}">
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#40FF00FF">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#01000000">
                         <!--Grid.ColumnDefinitions>
                             <ColumnDefinition Width="10"/>
                             <ColumnDefinition Width="*"/>
@@ -309,12 +309,95 @@
                             <RowDefinition Height="10"/>
                         </Grid.RowDefinitions-->
                         <ContentPresenter x:Name="PART_ContentPresenter" Content="{TemplateBinding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.CanContentScroll="False"/><!-- Grid.RowSpan="2" Grid.ColumnSpan="2"/-->
-                        <Thumb x:Name="PART_ResizeGrip" Grid.Row="0" Grid.Column="0"/>
+                        <Thumb x:Name="PART_ResizeGrip" Grid.Row="0" Grid.Column="0">
+                            <Thumb.Style>
+                                <Style TargetType="{x:Type Thumb}">
+                                    <Setter Property="SnapsToDevicePixels" Value="true" />
+                                    <Setter Property="OverridesDefaultStyle" Value="true" />
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Grid>
+                                                    <Rectangle Fill="#01000000" Stroke="Transparent" StrokeThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                                                    <Grid x:Name="ShineLine" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="10" Margin="0,-6" Opacity="0">
+                                                        <Grid.Background>
+                                                            <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                                                                <RadialGradientBrush.GradientStops>
+                                                                    <GradientStop Offset="0" Color="#40FFFFFF" />
+                                                                    <GradientStop Offset="1" Color="Transparent" />
+                                                                </RadialGradientBrush.GradientStops>
+                                                            </RadialGradientBrush>
+                                                        </Grid.Background>
+                                                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="#40FFFFFF" Height="1"/>
+                                                        <Ellipse x:Name="FlashRectangle" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="10" Opacity="0" UseLayoutRounding="True">
+                                                            <Ellipse.Fill>
+                                                                <RadialGradientBrush GradientOrigin="0.5,0.5" Center="0.5,0.5">
+                                                                    <RadialGradientBrush.GradientStops>
+                                                                        <GradientStop Offset="0" Color="White" />
+                                                                        <GradientStop Offset="1" Color="Transparent" />
+                                                                    </RadialGradientBrush.GradientStops>
+                                                                </RadialGradientBrush>
+                                                            </Ellipse.Fill>
+                                                        </Ellipse>
+                                                    </Grid>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <DataTrigger Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="True">
+                                                        <DataTrigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.125"/>
+                                                                    <ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0" Duration="0:0:0.375"/>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FlashRectangle" Storyboard.TargetProperty="Opacity" BeginTime="0:0:0.375" Duration="0:0:0.375">
+                                                                        <EasingDoubleKeyFrame Value="0" KeyTime="0"/>
+                                                                        <EasingDoubleKeyFrame Value="0.5" KeyTime="0:0:0.25"/>
+                                                                        <EasingDoubleKeyFrame Value="0" KeyTime="0:0:0.375"/>
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.EnterActions>
+                                                        <DataTrigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.125"/>
+                                                                    <ThicknessAnimation Storyboard.TargetName="ShineLine" Storyboard.TargetProperty="Margin" To="0,-6" Duration="0:0:0.375"/>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </DataTrigger.ExitActions>
+                                                    </DataTrigger>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FlashRectangle" Storyboard.TargetProperty="Opacity" Duration="0:0:0.25">
+                                                                        <EasingDoubleKeyFrame Value="0" KeyTime="0"/>
+                                                                        <EasingDoubleKeyFrame Value="1" KeyTime="0:0:0.125"/>
+                                                                        <EasingDoubleKeyFrame Value="0" KeyTime="0:0:0.25"/>
+                                                                    </DoubleAnimationUsingKeyFrames>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard/>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                    <DataTrigger Binding="{Binding IsDirectionReversed, RelativeSource={RelativeSource Mode=TemplatedParent}}" Value="False">
+                                                        <Setter TargetName="ShineLine" Property="VerticalAlignment" Value="Bottom"/>
+                                                    </DataTrigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Thumb.Style>
+                        </Thumb>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Orientation" Value="Vertical">
                             <Setter Property="MaxWidth" Value="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
-                            <Setter TargetName="PART_ResizeGrip" Property="Height" Value="10"/>
+                            <Setter TargetName="PART_ResizeGrip" Property="Height" Value="12"/>
                             <Setter Property="HorizontalAlignment" Value="Stretch"/>
                         </Trigger>
                         <MultiTrigger>
@@ -334,7 +417,7 @@
 
                         <Trigger Property="Orientation" Value="Horizontal">
                             <Setter Property="MaxHeight" Value="{Binding ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
-                            <Setter TargetName="PART_ResizeGrip" Property="Width" Value="10"/>
+                            <Setter TargetName="PART_ResizeGrip" Property="Width" Value="12"/>
                             <Setter Property="VerticalAlignment" Value="Stretch"/>
                         </Trigger>
                         <MultiTrigger>
